@@ -5,6 +5,7 @@ export interface Config {
   discordGomsToken: string;
   guildId: string;
   councilRoleId: string;
+  gomsBaseUrl: string;
 }
 
 export const config: Config = {
@@ -12,4 +13,5 @@ export const config: Config = {
   discordGomsToken: process.env.DISCORD_GOMS_TOKEN ?? "",
   guildId: process.env.GUILD_ID ?? "",
   councilRoleId: process.env.COUNCIL_ROLE_ID ?? "",
+  gomsBaseUrl: process.env.GOMS_BASE_URL ?? ""
 };
