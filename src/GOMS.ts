@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
     Client,
     Events,
@@ -6,6 +7,7 @@ import {
     REST,
     Routes
 } from "discord.js";
+import sendCustomNotification from "./commands/sendCustomNotification";
 import setTodayOuting from "./commands/setTodayOuting";
 import { Command } from "./interfaces/Command";
 import { config } from "./utils/config";
@@ -32,7 +34,8 @@ export class GOMS {
       config.discordToken
     );
     const slashCommands: Array<Command> = [
-      setTodayOuting
+      setTodayOuting,
+      sendCustomNotification
     ];
 
     this.slashCommandMap = slashCommands.reduce((map, command) => {
@@ -89,6 +92,10 @@ export class GOMS {
               await interaction.followUp({
                 content: error.toString()
               });
+            } else if(axios.isAxiosError(error)) {
+                await interaction.reply({
+                    content: error.response?.data.message
+                })
             } else {
               await interaction.reply({
                 content: error.toString()

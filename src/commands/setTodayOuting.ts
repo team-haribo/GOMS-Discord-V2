@@ -1,7 +1,6 @@
-import { ChatInputCommandInteraction, SlashCommandBooleanOption, SlashCommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, GuildMember, SlashCommandBooleanOption, SlashCommandBuilder } from 'discord.js';
 import { Command } from '../interfaces/Command';
 import { axiosInstance } from '../utils/axios';
-import { config } from '../utils/config';
 
 export default {
   data: new SlashCommandBuilder()
@@ -13,16 +12,26 @@ export default {
 
   async execute(interaction: ChatInputCommandInteraction) {
     const isTodayOuting: boolean | null = interaction.options.getBoolean("outing-check");
+    const interactionMember = interaction.member as GuildMember
 
     try {
-        await axiosInstance.post("outing-date/today", {
-            outingStatus: isTodayOuting,
-            token: config.discordGomsToken
-        })
+        await axiosInstance.post("api/v2/outing-date/today", { outingStatus: isTodayOuting })
     } catch (error) {
         throw error
     }
 
-    interaction.reply("성공적으로 외출제 여부를 변경하였습니다.")
+    interaction.reply({
+        embeds: [
+            {
+                color: 0x0DBC79,
+                title: "외출제 상태 변경 성공",
+                description: `
+                사용자: <@${interactionMember.user.id}>
+                외출제 상태: ${!isTodayOuting} → ${isTodayOuting}
+                날짜: ${new Date().toISOString().slice(0, 10).replace(/-/g, '.')}
+                `,
+            }
+        ]
+    })
   },
 } as Command;
