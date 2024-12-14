@@ -14,13 +14,15 @@ export default {
     const isTodayOuting: boolean | null = interaction.options.getBoolean("outing-check");
     const interactionMember = interaction.member as GuildMember
 
+    await interaction.deferReply();
+
     try {
         await axiosInstance.post("api/v2/outing-date/today", { outingStatus: isTodayOuting })
     } catch (error) {
         throw error
     }
 
-    interaction.reply({
+    await interaction.reply({
         embeds: [
             {
                 color: 0x0DBC79,

@@ -18,6 +18,8 @@ export default {
     const content = interaction.options.getString("content")
     const interactionMember = interaction.member as GuildMember
 
+    await interaction.deferReply();
+
     try {
         await axiosInstance.post("api/v2/notification/send", {
             title: title,
@@ -27,7 +29,7 @@ export default {
         throw error
     }
 
-    interaction.reply({
+    await interaction.reply({
         embeds: [
             {
                 color: 0x0DBC79,
