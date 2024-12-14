@@ -22,7 +22,7 @@ export default {
         throw error
     }
 
-    await interaction.reply({
+    await interaction.editReply({
         embeds: [
             {
                 color: 0x0DBC79,
