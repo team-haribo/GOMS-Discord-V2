@@ -8,6 +8,7 @@ import {
     Routes
 } from "discord.js";
 import sendCustomNotification from "./commands/sendCustomNotification";
+import sendTestNotification from "./commands/sendTestNotification";
 import setTodayOuting from "./commands/setTodayOuting";
 import { Command } from "./interfaces/Command";
 import { config } from "./utils/config";
@@ -35,7 +36,8 @@ export class GOMS {
     );
     const slashCommands: Array<Command> = [
       setTodayOuting,
-      sendCustomNotification
+      sendCustomNotification,
+      sendTestNotification
     ];
 
     this.slashCommandMap = slashCommands.reduce((map, command) => {
